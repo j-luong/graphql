@@ -1,28 +1,16 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const { buildSchema } = require('graphql');
-const _ = require('lodash');
-
 // construct schema using GraphQL schema language
-const schema = buildSchema(`
-    type Query {
-        hello(name: String): String,
-        rollDice(numDice: Int!, numSides: Int): [Int]
-    }
-`);
-
+const schema = require('./src/schemas');
 // the root provides a resolver function for each API endpoint
-let root = {
-    hello: ({ name = 'world' }) => `Hello ${name}`,
-    rollDice: ({ numDice, numSides }) => _.times(numDice, () => (1 + Math.floor(Math.random() * (numSides || 6))))
-};
+const rootValue = require('./src/resolvers');
 
 const app = express();
 
 app.use('/graphql',
     graphqlHTTP({
         schema,
-        rootValue: root,
+        rootValue,
         graphiql: true
     })
 );
