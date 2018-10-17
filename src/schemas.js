@@ -1,10 +1,10 @@
 const { buildSchema } = require('graphql');
 
-const queries = `
+const schema = `
 type Query {
     hello(name: String): String,
     rollDice(numDice: Int!, numSides: Int): [Int]
 }
 `
 
-module.exports = buildSchema(queries);
+module.exports = buildSchema(schema);
